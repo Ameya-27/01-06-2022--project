@@ -11,6 +11,8 @@ $AllEmployee_link = "../admin/allEmployee.php";
 $MyTeam_link = "../admin/admin_myteam.php";
 $Parameter = "PARAMETER";
 $Parameter_link = "view_para.php";
+$Evaluation_link = "../evaluation_form/view_admin_task.php";
+$Evaluation =  "Evaluation";
 include "../master/db_conn.php";
 include "../master/pre-header.php";
 ?>
@@ -31,8 +33,12 @@ include "../master/breadcrumbs.php";
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paraModal">
         ADD PARAMETER
     </button>
-</div>
 
+</div>
+<br>
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <a class="btn btn-primary" href="../form/view_task.php"> Task </a>
+</div>
 <!-- ################################################ para form start #####################################################################-->
 <div class="modal fade" id="paraModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -151,10 +157,10 @@ include "../master/breadcrumbs.php";
         <?php include 'para_list.php';
         if (mysqli_num_rows($res) > 0) { ?>
             <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.css" />
-            <table id="table" class="table" style="width: 32rem;">
+            <table id="table" class="table-secondary table-bordered" style="width: 32rem;">
                 <thead>
                     <tr>
-                        <th scope="col">Parameter Id</th>
+                        <th scope="col">Sr. No.</th>
                         <th scope="col">Parameter Title</th>
                         <th scope="col">Parameter Description</th>
                         <th scope="col">Parameter Min Rating</th>
@@ -173,7 +179,7 @@ include "../master/breadcrumbs.php";
                         $array[] = $rows;
                     ?>
                         <tr>
-                            <td><?= $rows['para_id'] ?></td>
+                            <td><?= $i ?></td>
                             <td><?= $rows['para_title'] ?></td>
                             <td><?= $rows['para_description'] ?></td>
                             <td><?= $rows['min_rating'] ?></td>
@@ -192,59 +198,59 @@ include "../master/breadcrumbs.php";
         <?php } ?>
     </div>
 </div>
-    <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.js"></script>
-    <script>
-        jQuery(document).ready(function($) {
-            $('#table').DataTable();
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('.editbtn').on('click', function() {
-                $('#paraeditmodal').modal('show');
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.js"></script>
+<script>
+    jQuery(document).ready(function($) {
+        $('#table').DataTable();
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('.editbtn').on('click', function() {
+            $('#paraeditmodal').modal('show');
 
-                $tr = $(this).closest('tr');
+            $tr = $(this).closest('tr');
 
-                var data = $tr.children("td").map(function() {
-                    return $(this).text();
-                }).get();
+            var data = $tr.children("td").map(function() {
+                return $(this).text();
+            }).get();
 
-                console.log(data);
+            console.log(data);
 
-                $('#update_para_id').val(data[0]);
-                $('#update_para_title').val(data[1]);
-                $('#update_para_description').val(data[2]);
-                $('#update_para_min_r').val(data[3]);
-                $('#update_para_max_r').val(data[4]);
-
-            });
+            $('#update_para_id').val(data[0]);
+            $('#update_para_title').val(data[1]);
+            $('#update_para_description').val(data[2]);
+            $('#update_para_min_r').val(data[3]);
+            $('#update_para_max_r').val(data[4]);
 
         });
-    </script>
-    <script>
-        $(document).ready(function() {
 
-            $('.deletebtn').on('click', function() {
+    });
+</script>
+<script>
+    $(document).ready(function() {
 
-                $('#deletemodal').modal('show');
+        $('.deletebtn').on('click', function() {
 
-                $tr = $(this).closest('tr');
+            $('#deletemodal').modal('show');
 
-                var data = $tr.children("td").map(function() {
-                    return $(this).text();
-                }).get();
+            $tr = $(this).closest('tr');
 
-                console.log(data);
+            var data = $tr.children("td").map(function() {
+                return $(this).text();
+            }).get();
 
-                $('#delete_id').val(data[0]);
+            console.log(data);
 
-            });
+            $('#delete_id').val(data[0]);
+
         });
-    </script>
+    });
+</script>
 
-    <?php
-    include "../master/footer.php";
-    include "../master/after-footer.php";
-    ?>
+<?php
+include "../master/footer.php";
+include "../master/after-footer.php";
+?>

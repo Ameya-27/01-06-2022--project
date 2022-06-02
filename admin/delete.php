@@ -1,5 +1,4 @@
 <?php 
-
 include "../master/db_conn.php";
 if(isset($_POST['deletedata']))
 {

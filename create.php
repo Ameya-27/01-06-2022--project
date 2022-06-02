@@ -13,6 +13,8 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
     $MyTeam_link = "admin_myteam.php";
     $Parameter = "PARAMETER";
     $Parameter_link = "parameter/view_para.php";
+    $Evaluation_link = "../evaluation_form/view_admin_task.php";
+    $Evaluation =  "Evaluation";
     //include "../master/db_conn.php";
     include "master/pre-header.php";
     include "master/header.php";

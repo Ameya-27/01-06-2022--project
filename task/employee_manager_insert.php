@@ -47,8 +47,23 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
                                     header("Location:../evaluation_form/view_manager_task.php");
                                 }
                             }
+                        }else{
+                            //update data for end_employee
+                            $sql_8 = "UPDATE form_isto_para SET rating_emp = '$rating_id' WHERE form_id = $form_id AND para_id = $para_id AND is_submit=0";
+                            $result_8 = mysqli_query($conn, $sql_8);
+                            if ($result_8 != True) {
+                                echo "Error: " . $sql_8 . "<br>" . $conn->error;
+                            } else {
+                                $sql_9 = "UPDATE form_isto_para SET is_submit=1 WHERE form_id=$form_id AND para_id = $para_id";
+                                $result_9 = mysqli_query($conn, $sql_9);
+                                if ($result_9 != True) {
+                                    echo "Error" . $sql_9 . "<br>" . $conn->error;
+                                } else {
+                                    header("Location:../evaluation_form/view_employee_task.php");
+                                }
+                            }
                         }
-                    }
+                    }//admin...
                 }
             }
         endwhile;
@@ -71,8 +86,20 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
                         echo "Error" . $sql_8 . "<br>" . $conn->error;
                     }
                 }
+            }else{
+                $sql_10 = "UPDATE form_master SET desc_emp = '$desc' WHERE form_id = $form_id ";
+                $result_10 = mysqli_query($conn, $sql_10);
+                if ($result_10 != True) {
+                    echo "Error: " . $sql_10 . "<br>" . $conn->error;
+                } else {
+                    $sql_11 = "UPDATE form_master SET is_submit=1 WHERE form_id = $form_id";
+                    $result_11 = mysqli_query($conn, $sql_11);
+                    if ($result_11 != True) {
+                        echo "Error" . $sql_11 . "<br>" . $conn->error;
+                    }
+                }
             }
-        }
+        }//admin....
 
 
 

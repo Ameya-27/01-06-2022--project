@@ -1,26 +1,48 @@
 <?php
 session_start();
 if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
-    $page_title = "admin_team";
-    $Dashboard = "ADMIN";
-    $Department = "DEPARTMENT";
-    $Employee = "EMPLOYEE";
-    $Dashboard_link = "../admin/admin-dashboard.php";
-    $Department_link = "../department/create_dept.php";
-    $All_Employee = "ALL EMPLOYEES";
-    $My_Team = "MY TEAM";
-    $AllEmployee_link = "../admin/allEmployee.php";
-    $MyTeam_link = "../admin/admin_myteam.php";
-    $Parameter = "PARAMETER";
-    $Parameter_link = "../parameter/view_para.php";
-    include "../master/db_conn.php";
-    include "../master/pre-header.php";
-    include "../master/close_header.php";
+    if ($_SESSION['role'] == 'admin') {
+        $page_title = "admin_team";
+        $Dashboard = "ADMIN";
+        $Department = "DEPARTMENT";
+        $Employee = "EMPLOYEE";
+        $Dashboard_link = "../admin/admin-dashboard.php";
+        $Department_link = "../department/create_dept.php";
+        $All_Employee = "ALL EMPLOYEES";
+        $My_Team = "MY TEAM";
+        $AllEmployee_link = "../admin/allEmployee.php";
+        $MyTeam_link = "../admin/admin_myteam.php";
+        $Parameter = "PARAMETER";
+        $Parameter_link = "../parameter/view_para.php";
+        $Evaluation_link = "view_admin_task.php";
+        $Evaluation =  "Evaluation";
+        include "../master/db_conn.php";
+        include "../master/pre-header.php";
+        include "../master/close_header.php";
 ?>
 
     <?php
-    include "../master/header.php";
-    include "../master/navbar_admin.php";
+        include "../master/header.php";
+        include "../master/navbar_admin.php";
+    } elseif ($_SESSION['role'] == 'employee') {
+        if ($_SESSION['is_manager'] == 1) {
+            //manager
+            $page_title = "view";
+            $Dashboard = "MANAGER";
+            $Dashboard_link = "../manager/manager-dashboard.php";
+            $My_Evaluation = "My Evaluation";
+            $MyEvaluation_link = "view_manager_task.php";
+            $My_Team = "MY TEAM";
+            $MyTeam_link = "../manager/manager_myteam.php";
+            include "../master/db_conn.php";
+            include "../master/pre-header.php";
+            include "../master/header.php";
+            include "../master/navbar_manager.php";
+        } else {
+            header("Location: ../login.php");
+        }
+    }
+
     include "../master/breadcrumbs.php";
     ?>
     <div class="app">
@@ -73,31 +95,31 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
                                         <div class="form-group">
                                             <label class="font-weight-semibold" for="desc">Evaluation:</label>
                                             <div class="input-affix">
-                                                <i class="prefix-icon anticon anticon-user"></i>
+                                                <!--<i class="prefix-icon anticon anticon-user"></i>-->
                                                 <input type="text" class="form-control" id="desc" name="desc" placeholder="task_eval" required>
                                             </div>
                                         </div>
                                         <!-- form-evaluation-end -->
-                    
+
                                         <!-- form-checkbox -start -->
                                         <div class="form-group">
                                             <table class="table">
                                                 <thead>
                                                     <tr>
-                                                        <th scope="col"><label >parameters</label></th>
-                                                        <th scope="col"><label >Min-Rate</label></th>
-                                                        <th scope="col"><label >Max-Rate</label></th>
-                                                        <th scope="col"><label >Your-Rate</label></th>
+                                                        <th scope="col"><label>parameters</label></th>
+                                                        <th scope="col"><label>Min-Rate</label></th>
+                                                        <th scope="col"><label>Max-Rate</label></th>
+                                                        <th scope="col"><label>Your-Rate</label></th>
                                                     </tr>
                                                 </thead>
                                                 <?php
                                                 $sql = "SELECT para_id,para_title,min_rating,max_rating FROM para_master WHERE is_deleted = 0 ";
                                                 $result = mysqli_query($conn, $sql);
-                                                $para = array();?>
+                                                $para = array(); ?>
                                                 <tbody>
                                                     <?php
-                                                while ($row = $result->fetch_assoc()) : ?>
-                                                    
+                                                    while ($row = $result->fetch_assoc()) : ?>
+
                                                         <tr>
                                                             <?php
 
@@ -106,9 +128,9 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
                                                             //$res = mysqli_query($conn, $query);
                                                             //$row1 = mysqli_fetch_assoc($res)
                                                             ?>
-                                                            <td><input type="checkbox" name = "parameter_<?php echo $row['para_id']; ?>" value="<?php echo $row['para_id'];?>">
-                                                                <label  ><?php echo $row['para_title']; ?></label>
-                                                                </td>
+                                                            <td><input type="checkbox" name="parameter_<?php echo $row['para_id']; ?>" value="<?php echo $row['para_id']; ?>">
+                                                                <label><?php echo $row['para_title']; ?></label>
+                                                            </td>
                                                             <td>
                                                                 <input type="text" disabled maxlength="2" size='3' name=" min_rating" value="<?php echo $row['min_rating']; ?>">
                                                             </td>
@@ -120,25 +142,25 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
                                                             </td>
                                                         </tr>
 
-                                                    
-                                                <?php
-                                                endwhile;
-                                                ?>
+
+                                                    <?php
+                                                    endwhile;
+                                                    ?>
                                                 </tbody>
                                             </table>
 
 
                                         </div>
                                         <!-- form-checkbox end--->
-                                       
+
                                         <!--- form-employee -start -->
 
                                         <div class="form-group">
                                             <label for="exampleFormControlSelect1" for="employee">Employee</label>
                                             <select class="form-control" id="employee" name="employee">
-                                               
+
                                                 <?php
-                                                $uid= $_GET['Id'];
+                                                $uid = $_GET['Id'];
                                                 $id = $_SESSION['user_master_id'];
                                                 $sql = "SELECT name,user_master_id FROM user_master WHERE user_master_id = '$uid' AND is_deleted=0 AND manager_id = $id ";
                                                 $result = mysqli_query($conn, $sql);
@@ -185,11 +207,12 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
             document.getElementById('myDate').value = today;
         }
     </script>
+
     <body onload="SetDate();">
     <?php
-    
+
     include "../master/footer.php";
     include "../master/after-footer.php";
-    } else {
+} else {
     header("Location:../login.php");
 }

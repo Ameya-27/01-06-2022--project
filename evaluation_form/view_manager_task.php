@@ -69,7 +69,7 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
                             <td style="display:none"><?= $rows_1['manager_id'] ?></td>
                             <td style="display:none"><?= $rows_1['for_id'] ?></td>
                             <td>
-                                <a class="btn btn-success evalbtn" href="../task/manager_task.php?vmt_form_id=<?php echo $rows_1['form_id']; ?> &vmt_task_id=<?php echo $rows_1['task_id']?> &vmt_task_title=<?php echo $rows_1['task_title']?> &vmt_manager_id=<?php echo $rows_1['manager_id']?> &vmt_for_id=<?php echo $rows_1['for_id']?>">View</a>
+                                <a class="btn btn-success evalbtn" href="../task/disabled_view.php?vmt_form_id=<?php echo $rows_1['form_id']; ?> &vmt_task_id=<?php echo $rows_1['task_id']?> &vmt_task_title=<?php echo $rows_1['task_title']?> &vmt_manager_id=<?php echo $rows_1['manager_id']?> &vmt_for_id=<?php echo $rows_1['for_id']?>">View</a>
                             </td>
                         </tr>
                     <?php $i++;
@@ -82,7 +82,7 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
     </div>
 
 
-    <!-- main content start here-->
+    <!-- main content end here-->
 <?php
     include "../master/footer.php";
     include "../master/after-footer.php";

@@ -14,6 +14,8 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
     $MyTeam_link = "../admin/admin_myteam.php";
     $Parameter = "PARAMETER";
     $Parameter_link = "../parameter/view_para.php";
+    $Evaluation_link = "../evaluation_form/view_admin_task.php";
+    $Evaluation =  "Evaluation";
     include "../master/db_conn.php";
     include "../master/pre-header.php";
     include "../master/close_header.php";
@@ -111,41 +113,57 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
 
     <!-- ################################################################################################################################ -->
     <!--delete -->
-    <div class="container d-flex  align-items-center" style="min-height: 30vh">
-        <div class="p-3">
-            <?php include 'dept_list.php';
-            if (mysqli_num_rows($res) > 0) { ?>
-                <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.css" />
-                <table id="table" class="table table-x1" style="width: 35rem;">
-                    <thead>
-                        <tr>
-                            <th scope="col">Dept. Id</th>
-                            <th scope="col">Dept. Name</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $query = "SELECT * from dept_master";
-                        //set array
-                        $array = array();
-                        $i = 1;
-                        while ($rows = mysqli_fetch_assoc($res)) {
-                            $array[] = $rows;
-                        ?>
-                            <tr>
-                                <td><?= $rows['dept_id'] ?></td>
-                                <td><?= $rows['dept_name'] ?></td>
-                                <td>
-                                    <button type="button" class="btn btn-success editbtn">EDIT</button>
-                                    <button type="button" class="btn btn-danger deletebtn">DELETE</button>
-                                </td>
-                            </tr>
-                        <?php $i++;
-                        } ?>
-                    </tbody>
-                </table>
-            <?php } ?>
+    <div class="app">
+        <div class="container-fluid p-h-0 p-v-20 bg full-height d-flex" style="background-image: url('assets/images/others/login-3.png')">
+            <div class="d-flex flex-column justify-content-between w-100">
+                <div class="container d-flex h-100">
+                    <div class="row align-items-center w-100">
+                        <div class="col-md-7 col-lg-10 m-h-auto">
+                            <div class="card shadow-lg">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center justify-content-between m-b-30">
+                                        <div class="p-3">
+                                            <?php include 'dept_list.php';
+                                            if (mysqli_num_rows($res) > 0) { ?>
+                                                <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.css" />
+                                                <table id="table" class="table-bordered table-warning" style="width: 45rem;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">Sr. No.</th>
+                                                            <th scope="col">Dept. Name</th>
+                                                            <th scope="col">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php
+                                                        $query = "SELECT * from dept_master";
+                                                        //set array
+                                                        $array = array();
+                                                        $i = 1;
+                                                        while ($rows = mysqli_fetch_assoc($res)) {
+                                                            $array[] = $rows;
+                                                        ?>
+                                                            <tr>
+                                                                <td><?= $i ?></td>
+                                                                <td><?= $rows['dept_name'] ?></td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-success editbtn">EDIT</button>
+                                                                    <button type="button" class="btn btn-danger deletebtn">DELETE</button>
+                                                                </td>
+                                                            </tr>
+                                                        <?php $i++;
+                                                        } ?>
+                                                    </tbody>
+                                                </table>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

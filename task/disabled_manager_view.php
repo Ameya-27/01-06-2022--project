@@ -1,45 +1,71 @@
 <?php
 session_start();
 if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
-    if ($_SESSION['role'] == 'employee' && $_SESSION['is_manager'] == 1) {
-        $page_title = "Manager";
-        $Dashboard = "MANAGER";
-        $Dashboard_link = "../manager/manager-dashboard.php";
-        //$Department = "DEPARTMENT";
-        $My_Evaluation = "My Evaluation";
-        $MyEvaluation_link = "../evaluation_form/view_manager_task.php";
-        //$Department_link = "../department/create_dept.php";
-        //$All_Employee = "ALL EMPLOYEES";
+?>
+    <?php
+    if ($_SESSION['role'] == 'employee') {
+        if ($_SESSION['is_manager'] == 1) {
+            //manager
+            $page_title = "Manager";
+            $Dashboard = "MANAGER";
+            $Dashboard_link = "../manager/manager-dashboard.php";
+            //$Department = "DEPARTMENT";
+            $My_Evaluation = "My Evaluation";
+            $MyEvaluation_link = "../evaluation_form/view_manager_task.php";
+            //$Department_link = "../department/create_dept.php";
+            //$All_Employee = "ALL EMPLOYEES";
+            $My_Team = "MY TEAM";
+            //$AllEmployee_link = "allEmployee.php";
+            $MyTeam_link = "../manager/manager_myteam.php";
+            include "../master/db_conn.php";
+            include "../master/pre-header.php";
+            include "../master/header.php";
+            include "../master/navbar_manager.php";
+        } else {
+            //employee
+            $page_title = "Employee";
+            $Dashboard = "Employee";
+            $Dashboard_link = "../employee/employee-dashboard.php";
+            //$Department = "DEPARTMENT";
+            $My_Evaluation = "My Evaluation";
+            $MyEvaluation_link = "../evaluation_form/view_employee_task.php";
+            //$Department_link = "../department/create_dept.php";
+            //$All_Employee = "ALL EMPLOYEES";
+            //$My_Team = "MY TEAM";
+            //$AllEmployee_link = "allEmployee.php";
+            //$MyTeam_link = "../manager/manager_myteam.php";  
+            include "../master/db_conn.php";
+            include "../master/pre-header.php";
+            include "../master/header.php";
+            include "../master/navbar_employee.php";
+        }
+    } else {
+        //admin..
+        $page_title = "admin";
+        $Dashboard = "ADMIN";
+        $Department = "DEPARTMENT";
+        $Employee = "EMPLOYEE";
+        $Dashboard_link = "admin-dashboard.php";
+        $Department_link = "../department/create_dept.php";
+        $All_Employee = "ALL EMPLOYEES";
         $My_Team = "MY TEAM";
-        //$AllEmployee_link = "allEmployee.php";
-        $MyTeam_link = "../manager/manager_myteam.php";
+        $AllEmployee_link = "allEmployee.php";
+        $MyTeam_link = "admin_myteam.php";
+        $Parameter = "PARAMETER";
+        $Parameter_link = "../parameter/view_para.php";
+        $Evaluation_link = "../evaluation_form/view_admin_task.php";
+        $Evaluation =  "Evaluation";
         include "../master/db_conn.php";
         include "../master/pre-header.php";
         include "../master/header.php";
-        include "../master/navbar_manager.php";
-        
-    } elseif ($_SESSION['role'] == 'employee' && $_SESSION['is_manager'] == 0) {
-        $page_title = "Employee";
-        $Dashboard = "Employee";
-        $Dashboard_link = "../employee/employee-dashboard.php";
-        //$Department = "DEPARTMENT";
-        $My_Evaluation = "My Evaluation";
-        $MyEvaluation_link = "../evaluation_form/view_employee_task.php";
-        //$Department_link = "../department/create_dept.php";
-        //$All_Employee = "ALL EMPLOYEES";
-        //$My_Team = "MY TEAM";
-        //$AllEmployee_link = "allEmployee.php";
-        //$MyTeam_link = "../manager/manager_myteam.php";  
-        include "../master/db_conn.php";
-        include "../master/pre-header.php";
-        include "../master/header.php";
-        include "../master/navbar_employee.php";
-        
+        include "../master/navbar_admin.php";
     }
     include "../master/breadcrumbs.php";
     include "../master/db_conn.php";
-    if ($_SESSION['role'] == 'employee' && $_SESSION['is_manager'] == 1 || $_SESSION['role'] == 'employee' && $_SESSION['is_manager'] == 0) { ?>
-
+    ?>
+    <!-- Main content starts here -->
+    <?php
+    if (($_SESSION['role'] == 'employee' && $_SESSION['is_manager'] == 1) || ($_SESSION['role'] == 'employee' && $_SESSION['is_manager'] == 0) || ($_SESSION['role'] == 'admin')) { ?>
         <?php
         $form_id = $_GET['vmt_form_id'];
         //echo $form_id;
@@ -64,13 +90,10 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
                                         <?php echo " $form_id";
                                         ?>
                                         '>
-
-
                                             <input type='hidden' id='manager_id' name='manager_id' value='
                                         <?php echo "$manager_id";
                                         ?>
                                         '>
-
                                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                                 <div class="form-group">
                                                     <input type="date" class="form-control" id="myDate" name="myDate" disabled />
@@ -85,7 +108,7 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
                                             <div class="form-group">
                                                 <label class="font-weight-semibold" for="title">Task Title:</label>
                                                 <div class="input-affix">
-                                                    <select class="form-control" id="title" name="title">
+                                                    <select class="form-control" id="title" name="title" disabled>
                                                         <?php
                                                         //$id = $_SESSION['user_master_id'];
                                                         $sql = "SELECT task_id,task_title FROM task_master WHERE task_id='$task_id' AND is_deleted=0 ";
@@ -104,8 +127,16 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
                                             <div class="form-group">
                                                 <label class="font-weight-semibold" for="desc">Evaluation:</label>
                                                 <div class="input-affix">
-                                                    <i class="prefix-icon anticon anticon-user"></i>
-                                                    <input type="text" class="form-control" id="desc" name="desc" placeholder="task_eval" required>
+                                                    <!--<i class="prefix-icon anticon anticon-user"></i>-->
+                                                    <input type="text" class="form-control" id="desc" name="desc" placeholder="task_eval" required disabled value="
+                                                    <?php
+                                                    $query_1 = "SELECT desc_manager from form_master where form_id = '$form_id'";
+                                                    $r_1 = mysqli_query($conn, $query_1);
+                                                    while ($row_1 = $r_1->fetch_assoc()) :
+                                                        echo $row_1['desc_manager'];
+                                                    endwhile;
+                                                    ?> 
+                                                    ">
                                                 </div>
                                             </div>
                                             <!-- form-evaluation-end -->
@@ -125,6 +156,8 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
                                                     <?php
                                                     $sql = "SELECT para_id,para_title,min_rating,max_rating FROM para_master WHERE is_deleted = 0 ";
                                                     $result = mysqli_query($conn, $sql);
+                                                    $query_2 = "SELECT rating_manager FROM form_isto_para WHERE form_id ='$form_id' ";
+                                                    $r_2 = mysqli_query($conn, $query_2);
                                                     $para = array(); ?>
                                                     <tbody>
                                                         <?php
@@ -135,7 +168,7 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
 
                                                                 $id = $row['para_id'];
                                                                 ?>
-                                                                <td><input type="checkbox" name="parameter_<?php echo $row['para_id']; ?>" value="<?php echo $row['para_id']; ?>">
+                                                                <td><input type="checkbox" checked disabled name="parameter_<?php echo $row['para_id']; ?>" value="<?php echo $row['para_id']; ?>">
                                                                     <label><?php echo $row['para_title']; ?></label>
                                                                 </td>
                                                                 <td>
@@ -145,7 +178,10 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
                                                                     <input type="text" disabled maxlength="2" size='3' name="max_rating" value="<?php echo $row['max_rating']; ?>">
                                                                 </td>
                                                                 <td>
-                                                                    <input type="text" maxlength="2" size='3' name="rating_<?php echo $row['para_id']; ?>">
+                                                                    <input type="text" disabled maxlength="2" size='3' name="rating_
+                                                                    <?php echo $row['para_id']; ?>" value="<?php
+                                                                                                            $row_2 = $r_2->fetch_assoc();
+                                                                                                            echo $row_2['rating_manager']; ?>">
                                                                 </td>
                                                             </tr>
 
@@ -160,29 +196,30 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
                                             </div>
                                             <!-- form-checkbox end------->
                                             <!----------------------------------------------
-                                         form-employee -start 
+                                         form-employee -start -->
 
                                             <div class="form-group">
                                                 <label for="exampleFormControlSelect1" for="employee">Employee</label>
-                                                <select class="form-control" id="employee" name="employee">
-                                                    <option value="" disabled selected hidden>Please Select</option>
-                                                    <?php /*
-                                                    $id = $_SESSION['user_master_id'];
-                                                    $sql = "SELECT user_master_id,name FROM user_master WHERE is_deleted=0 AND manager_id = $id ORDER BY user_master_id ASC ";
-                                                    $result = mysqli_query($conn, $sql);
-                                                    while ($row = $result->fetch_assoc()) :
-                                                    ?>
-                                                        <option value="<?php echo $row['user_master_id']; ?>"> <?php echo $row['name']; ?></option>
-                                                    <?php
-                                                    endwhile;
-                                                    */ ?>
+                                                <select class="form-control" id="employee" name="employee" disabled >
+                                                   
+                                                <?php
+                                                $uid = $_GET['Id'];
+                                                $id = $_SESSION['user_master_id'];
+                                                $sql = "SELECT user_master.name,form_master.form_id,user_master.user_master_id FROM user_master INNER JOIN form_master ON form_master.for_id = user_master.user_master_id WHERE user_master.is_deleted=0 AND form_master.form_id='$form_id' ";
+                                                $result = mysqli_query($conn, $sql);
+                                                while ($row = $result->fetch_assoc()) :
+                                                ?>
+                                                    <option value="<?php echo $row['user_master_id']; ?>"> <?php echo $row['name']; ?></option>
+                                                <?php
+                                                endwhile;
+                                                ?>
                                                 </select>
                                             </div>
-                                            form-employee -end -->
+                                            <!--form-employee -end -->
                                             <!-- form-submit -start -->
                                             <div class="form-group">
                                                 <div class="d-flex align-items-center justify-content-between">
-                                                    <button class="btn btn-primary" name="submit" value='submit' id='submit'>Submit</button>
+                                                    <button class="btn btn-primary" name="submit" value='submit' id='submit' disabled>Submit</button>
                                                 </div>
                                             </div>
                                             <!-- form-submit -end -->
@@ -216,9 +253,14 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
 
         <body onload="SetDate();">
 
-    <?php } else {
-        header("Location:../login.php");
+        <?php
+    } else {
+        header('Location:../login.php');
     }
+        ?>
+
+        <!-- Main content end here -->
+    <?php
     include "../master/footer.php";
     include "../master/after-footer.php";
 } else {

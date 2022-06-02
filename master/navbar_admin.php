@@ -31,10 +31,13 @@
                  </a>
                  <ul class="dropdown-menu">
                      <li>
-                     <a href=<?php echo $MyTeam_link ;?>><?php echo $My_Team; ?></a>
+                         <a href=<?php echo $MyTeam_link; ?>><?php echo $My_Team; ?></a>
                      </li>
                      <li>
-                     <a href=<?php echo $AllEmployee_link ;?>><?php echo $All_Employee; ?></a>
+                         <a href=<?php echo $AllEmployee_link; ?>><?php echo $All_Employee; ?></a>
+                     </li>
+                     <li>
+                         <a href=<?php echo $Evaluation_link; ?>><?php echo $Evaluation; ?></a>
                      </li>
                  </ul>
              </li>
