@@ -8,17 +8,14 @@ if(isset($_POST['update'])){
         $query_run = mysqli_query($conn, $query);
         if($query_run)
         {
-            echo $id;
-            echo $u_d;
-            echo '<script> alert("Data Updated"); </script>';
-            header("refresh:3;create_dept.php");
+            header("location: create_dept.php?alert=Data Updated");
         }
         else
         {
             echo '<script> alert("Data Not Updated"); </script>';
         }
 }else{
-    echo 1;
+    
 }
 
 ?>

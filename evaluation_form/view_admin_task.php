@@ -49,13 +49,17 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
                                                 <table id="table" class="table-success table-bordered" style="width: 45rem;">
                                                     <thead>
                                                         <tr>
-                                                            <th scope="col">Form Id</th>
-                                                            <th scope="col">Task Id</th>
+                                                            <th scope = "col">Sr.No.</th>
+                                                            <th scope="col" style="display:none">Form Id</th>
+                                                            <th scope="col" style="display:none">Task Id</th>
                                                             <th scope="col">Task Title</th>
-                                                            <th scope="col" style="display:none">Manager Id</th>
+                                                            <th scope="col" style="display:none">Manager Id</th>                                                       
                                                             <th scope="col" style="display:none">For Id</th>
-                                                            <th scope="col">Manager Evaluations</th>
-                                                            <th scope="col">Employee Evaluations</th>
+                                                            <th scope="col">Employee Name</th>
+                                                            <th scope="col">Manager Name</th>
+                                                            <th scope="col">Evaluations</th>
+                                                            <!--<th scope="col">Manager Evaluations</th>-->
+                                                            <!--<th scope="col">Employee Evaluations</th>-->
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -79,17 +83,30 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
                                                         <?php
                                                         $i_1 = 1;
                                                         while ($rows_1 = mysqli_fetch_assoc($result_1)) { ?>
-                                                            <tr>
-                                                                <td><?= $rows_1['form_id'] ?></td>
-                                                                <td><?= $rows_1['task_id'] ?></td>
+                                                        <?php
+                                                        $emp_id = $rows_1['for_id'];
+                                                        $mang_id = $rows_1['manager_id'];
+                                                        $query_2 ="SELECT name from user_master WHERE user_master_id=$emp_id AND is_deleted=0";
+                                                        $result_2 = mysqli_query($conn,$query_2);
+                                                        $rows_2 = mysqli_fetch_assoc($result_2);
+                                                        $query_3= "SELECT name from user_master WHERE user_master_id=$mang_id AND is_deleted=0";
+                                                        $result_3= mysqli_query($conn,$query_3);
+                                                        $rows_3= mysqli_fetch_assoc($result_3);
+                                                        ?>
+                                                            <tr><td><?= $i_1 ?></td>
+                                                                <td style="display: none"><?= $rows_1['form_id'] ?></td>
+                                                                <td style="display:none"><?= $rows_1['task_id'] ?></td>
                                                                 <td><?= $rows_1['task_title'] ?></td>
                                                                 <td style="display:none"><?= $rows_1['manager_id'] ?></td>
                                                                 <td style="display:none"><?= $rows_1['for_id'] ?></td>
+                                                                <td> <?= $rows_2['name'] ?> </td>
+                                                                <td> <?= $rows_3['name'] ?> </td>
                                                                 <td>
-                                                                    <a class="btn btn-success evalbtn" href="../task/disabled_manager_view.php?vmt_form_id=<?php echo $rows_1['form_id']; ?> &vmt_task_id=<?php echo $rows_1['task_id'] ?> &vmt_task_title=<?php echo $rows_1['task_title'] ?> &vmt_manager_id=<?php echo $rows_1['manager_id'] ?> &vmt_for_id=<?php echo $rows_1['for_id'] ?>">View</a>
-                                                                </td>
-                                                                <td>
-                                                                    <a class="btn btn-success evalbtn" href="../task/disabled_view.php?vmt_form_id=<?php echo $rows_1['form_id']; ?> &vmt_task_id=<?php echo $rows_1['task_id'] ?> &vmt_task_title=<?php echo $rows_1['task_title'] ?> &vmt_manager_id=<?php echo $rows_1['manager_id'] ?> &vmt_for_id=<?php echo $rows_1['for_id'] ?>">View</a>
+                                                                    <!--<a class="btn btn-success evalbtn" href="../task/disabled_manager_view.php?vmt_form_id=<?php // echo $rows_1['form_id']; ?> &vmt_task_id=<?php //echo $rows_1['task_id'] ?> &vmt_task_title=<?php //echo $rows_1['task_title'] ?> &vmt_manager_id=<?php //echo $rows_1['manager_id'] ?> &vmt_for_id=<?php //echo $rows_1['for_id'] ?>">View_manager</a>
+                                                                
+                                                                    <a class="btn btn-success evalbtn" href="../task/disabled_view.php?vmt_form_id=<?php //echo $rows_1['form_id']; ?> &vmt_task_id=<?php //echo $rows_1['task_id'] ?> &vmt_task_title=<?php //echo $rows_1['task_title'] ?> &vmt_manager_id=<?php //echo $rows_1['manager_id'] ?> &vmt_for_id=<?php //echo $rows_1['for_id'] ?>">View_emp</a> -->
+
+                                                                    <a class="btn btn-success evalbtn" href="../task/dis_eva_task.php?vmt_form_id=<?php echo $rows_1['form_id']; ?> &vmt_task_id=<?php echo $rows_1['task_id'] ?> &vmt_task_title=<?php echo $rows_1['task_title'] ?> &vmt_manager_id=<?php echo $rows_1['manager_id'] ?> &vmt_for_id=<?php echo $rows_1['for_id'] ?>">View</a>
                                                                 </td>
                                                             </tr>
                                                         <?php $i_1++;

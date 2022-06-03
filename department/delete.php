@@ -11,8 +11,7 @@ if(isset($_POST['deletedata']))
 
     if($query_run)
     {
-        echo '<script> alert("Data Deleted"); </script>';
-        header("refresh:1;create_dept.php");
+        header("location: create_dept.php");
     }
     else
     {

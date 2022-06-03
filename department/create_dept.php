@@ -110,9 +110,17 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
             </div>
         </div>
     </div>
-
     <!-- ################################################################################################################################ -->
     <!--delete -->
+    <?php 
+    $vr = $_GET['alert'];
+    if (isset($vr)) { ?>
+        <div id='alert' class="alert alert-danger" role="alert">
+            <?= $vr ?>
+        </div>
+    <?php } 
+   $vr = null;
+    ?>
     <div class="app">
         <div class="container-fluid p-h-0 p-v-20 bg full-height d-flex" style="background-image: url('assets/images/others/login-3.png')">
             <div class="d-flex flex-column justify-content-between w-100">
@@ -130,6 +138,7 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
                                                     <thead>
                                                         <tr>
                                                             <th scope="col">Sr. No.</th>
+                                                            <th scope="col" style="display:none">Id</th>
                                                             <th scope="col">Dept. Name</th>
                                                             <th scope="col">Action</th>
                                                         </tr>
@@ -144,7 +153,8 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
                                                             $array[] = $rows;
                                                         ?>
                                                             <tr>
-                                                                <td><?= $i ?></td>
+                                                                <td scope="row"><?= $i ?></td>
+                                                                <td style="display:none"><?= $rows['dept_id'] ?></td>
                                                                 <td><?= $rows['dept_name'] ?></td>
                                                                 <td>
                                                                     <button type="button" class="btn btn-success editbtn">EDIT</button>
@@ -188,8 +198,8 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
 
                 console.log(data);
 
-                $('#update_dept_id').val(data[0]);
-                $('#update_dept_name').val(data[1]);
+                $('#update_dept_id').val(data[1]);
+                $('#update_dept_name').val(data[2]);
 
             });
 
@@ -210,10 +220,15 @@ if (isset($_SESSION['username']) && isset($_SESSION['user_master_id'])) {
 
                 console.log(data);
 
-                $('#delete_id').val(data[0]);
+                $('#delete_id').val(data[1]);
 
             });
         });
+    </script>
+    <script type="text/javascript">
+        setTimeout(function() {
+            $("#alert").alert('close');
+        }, 2000)
     </script>
 <?php
     include "../master/footer.php";
